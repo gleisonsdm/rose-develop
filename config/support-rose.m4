@@ -695,15 +695,21 @@ AC_MSG_NOTICE([FRONTEND_CXX_COMPILER_VENDOR = "$FRONTEND_CXX_COMPILER_VENDOR"])
 # *****************************************************************
 
 # DQ (2/27/2016): Added version 4.9.x to supported compilers.
-AC_MSG_CHECKING([whether your compiler is a GNU compiler and the version that is supported by ROSE (4.0.x - 6.3.x)])
-AC_ARG_ENABLE([gcc-version-check],AS_HELP_STRING([--disable-gcc-version-check],[Disable GCC version 4.0.x - 6.3.x verification check]),,[enableval=yes])
+AC_MSG_CHECKING([whether your compiler is a GNU compiler and the version that is supported by ROSE (4.9.4 - 5.1.0 - 5.2.0 - 5.3.0 - 5.4.0 - 6.3.0 - 7.3.0)])
+AC_ARG_ENABLE([gcc-version-check],AS_HELP_STRING([--disable-gcc-version-check],[Disable GCC version (4.9.4 - 5.1.0 - 5.2.0 - 5.3.0 - 5.4.0 - 6.3.0 - 7.3.0) verification check]),,[enableval=yes])
 if test "x$FRONTEND_CXX_COMPILER_VENDOR" = "xgnu" ; then
 if test "x$enableval" = "xyes" ; then
       AC_LANG_PUSH([C])
       # http://www.gnu.org/s/hello/manual/autoconf/Running-the-Compiler.html
       AC_COMPILE_IFELSE([
         AC_LANG_SOURCE([[
-          #if (__GNUC__ >= 4 && __GNUC_MINOR__ <= 9)
+          #if ((__GNUC__ == 4 && __GNUC_MINOR__ == 9) || \
+               (__GNUC__ == 5 && __GNUC_MINOR__ == 1) || \
+               (__GNUC__ == 5 && __GNUC_MINOR__ == 2) || \
+               (__GNUC__ == 5 && __GNUC_MINOR__ == 3) || \
+               (__GNUC__ == 5 && __GNUC_MINOR__ == 4) || \
+               (__GNUC__ == 6 && __GNUC_MINOR__ == 3) || \
+               (__GNUC__ == 7 && __GNUC_MINOR__ == 3))
             int rose_supported_gcc;
           #else
             not gcc, or gcc version is not supported by rose
@@ -712,7 +718,7 @@ if test "x$enableval" = "xyes" ; then
        ],
        [AC_MSG_RESULT([done])],
        gcc_version=`gcc -dumpversion`
-       [AC_MSG_FAILURE([your GCC $gcc_version version is currently NOT supported by ROSE; GCC 4.0.x to 4.8.x is supported now])])
+       [AC_MSG_FAILURE([your GCC $gcc_version version is currently NOT supported by ROSE; GCC (4.9.4, 5.1.0, 5.2.0, 5.3.0, 5.4.0, 6.3.0, 7.3.0) is supported now])])
       AC_LANG_POP([C])
 else
     AC_MSG_RESULT([skipping])
